@@ -1,5 +1,5 @@
 //
-//  DetailTableViewController.h
+//  MWFeedInfo.m
 //  MWFeedParser
 //
 //  Copyright (c) 2010 Michael Waterfall
@@ -27,15 +27,39 @@
 //  THE SOFTWARE.
 //
 
-#import <UIKit/UIKit.h>
-#import "MWFeedItem.h"
+#import "MWFeedInfo.h"
 
-@interface DetailTableViewController : UITableViewController {
-	MWFeedItem *item;
-	NSString *dateString, *summaryString;
+#define EXCERPT(str, len) (([str length] > len) ? [[str substringToIndex:len-1] stringByAppendingString:@"…"] : str)
+
+@implementation MWFeedInfo
+
+@synthesize title, link, summary;
+
+#pragma mark NSObject
+
+- (NSString *)description {
+	NSMutableString *string = [[NSMutableString alloc] initWithString:@"MWFeedInfo: "];
+	if (title)   [string appendFormat:@"“%@”", EXCERPT(title, 50)];
+	//if (link)    [string appendFormat:@" (%@)", link];
+	//if (summary) [string appendFormat:@", %@", MWExcerpt(summary, 50)];
+	return string;
 }
 
-@property (nonatomic, retain) MWFeedItem *item;
-@property (nonatomic, retain) NSString *dateString, *summaryString;
+#pragma mark NSCoding
+
+- (id)initWithCoder:(NSCoder *)decoder {
+	if ((self = [super init])) {
+		title = [decoder decodeObjectForKey:@"title"];
+		link = [decoder decodeObjectForKey:@"link"];
+		summary = [decoder decodeObjectForKey:@"summary"];
+	}
+	return self;
+}
+
+- (void)encodeWithCoder:(NSCoder *)encoder {
+	if (title) [encoder encodeObject:title forKey:@"title"];
+	if (link) [encoder encodeObject:link forKey:@"link"];
+	if (summary) [encoder encodeObject:summary forKey:@"summary"];
+}
 
 @end
