@@ -62,10 +62,22 @@ typedef enum { FeedTypeUnknown, FeedTypeRSS, FeedTypeRSS1, FeedTypeAtom } FeedTy
 - (void)feedParser:(MWFeedParser *)parser didParseFeedItem:(MWFeedItem *)item;
 - (void)feedParserDidFinish:(MWFeedParser *)parser;
 - (void)feedParser:(MWFeedParser *)parser didFailWithError:(NSError *)error;
+
+/** This allows for selection of alternative credentials when NSURLConnection finds present credentials in the shared storage.
+*   Return YES(default) if the parser should consult any present credentials without further asking.
+*   When NO is returned feedParser:didReceiveAuthenticationChallenge is called whenever the parser encounters authentication
+*/
+- (BOOL)feedParserShouldUseCredentialStorage:(MWFeedParser *)parser;
+
+/** This method passes on to the NSURLConnection which the parser is using. It should be implemented when
+* feedParser:shouldUseCredentialStorage returns YES. If in that case it is not, it throws an exception
+*
+*/
+- (void)feedParser:(MWFeedParser *)parser didReceiveAuthenticationChallenge:(NSURLAuthenticationChallenge *)challenge;
 @end
 
 // MWFeedParser
-@interface MWFeedParser : NSObject <NSXMLParserDelegate> {
+@interface MWFeedParser : NSObject <NSXMLParserDelegate, NSURLConnectionDelegate> {
 
 @private
 	

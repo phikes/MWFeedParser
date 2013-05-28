@@ -407,6 +407,21 @@
 	return nil; // Don't cache
 }
 
+- (BOOL)connectionShouldUseCredentialStorage:(NSURLConnection *)connection
+{
+    if([self.delegate respondsToSelector:@selector(feedParserShouldUseCredentialStorage:)])
+    {
+        return [self.delegate feedParserShouldUseCredentialStorage:self];
+    }
+    return YES;
+}
+
+- (void)connection:(NSURLConnection *)connection didReceiveAuthenticationChallenge:(NSURLAuthenticationChallenge *)challenge
+{
+    return [self.delegate feedParser:self didReceiveAuthenticationChallenge:challenge];
+}
+
+
 #pragma mark -
 #pragma mark XML Parsing
 
