@@ -58,6 +58,11 @@
 #pragma mark -
 #pragma mark NSObject
 
+- (id)copyWithZone:(NSZone*)zone
+{
+    return self;
+}
+
 - (id)init {
 	if ((self = [super init])) {
 

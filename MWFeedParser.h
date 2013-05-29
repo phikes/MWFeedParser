@@ -77,7 +77,7 @@ typedef enum { FeedTypeUnknown, FeedTypeRSS, FeedTypeRSS1, FeedTypeAtom } FeedTy
 @end
 
 // MWFeedParser
-@interface MWFeedParser : NSObject <NSXMLParserDelegate, NSURLConnectionDelegate> {
+@interface MWFeedParser : NSObject <NSXMLParserDelegate, NSURLConnectionDelegate, NSCopying> {
 
 @private
 	
@@ -139,6 +139,8 @@ typedef enum { FeedTypeUnknown, FeedTypeRSS, FeedTypeRSS1, FeedTypeAtom } FeedTy
 @property (nonatomic, readonly, getter=isParsing) BOOL parsing;
 
 #pragma mark Public Methods
+
+- (id)copyWithZone:(NSZone*)zone;
 
 // Init MWFeedParser with a URL string
 - (id)initWithFeedURL:(NSURL *)feedURL;
