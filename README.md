@@ -1,9 +1,29 @@
 # MWFeedParser — An RSS and Atom web feed parser for iOS
 
 #### About this fork
-This fork of MWFeedParser uses ARC and runs on Mac OS X up to the newest Mountain Lion. The original license is kept and can
-be found below. Following is the original README.
+This fork of MWFeedParser has the following enhancements:
 
+   * uses ARC
+   * runs on Mac OS X up to the newest Mountain Lion
+   * Allows the delegate to decide on authentication of the underlying NSURLConnection
+   
+#### Usage: 
+
+    /** This allows for selection of alternative credentials when NSURLConnection finds present credentials in the shared storage.
+    *   Return YES(default) if the parser should consult any present credentials without further asking.
+    *   When NO is returned feedParser:didReceiveAuthenticationChallenge is called whenever the parser encounters authentication
+    */
+    - (BOOL)feedParserShouldUseCredentialStorage:(MWFeedParser *)parser;
+
+    /** This method passes on to the NSURLConnection which the parser is using. It should be implemented when
+    * feedParser:shouldUseCredentialStorage returns YES. If in that case it is not, it throws an exception
+    *
+    */
+    - (void)feedParser:(MWFeedParser *)parser didReceiveAuthenticationChallenge:(NSURLAuthenticationChallenge *)challenge;
+   
+**The original license is kept and can be found below. Following is the original README.**
+
+----------------------
 
 MWFeedParser is an Objective-C framework for downloading and parsing RSS (1.* and 2.*) and Atom web feeds. It is a very simple and clean implementation that reads the following information from a web feed:
 
